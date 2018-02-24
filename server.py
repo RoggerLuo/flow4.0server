@@ -3,9 +3,20 @@ from flask_cors import *
 from flask import Flask, render_template, Response, request
 import json
 import mysql_operation as sql
+from machine_learning.findSimilar import findWord
 
 app = Flask(__name__, static_folder='static')
 CORS(app, supports_credentials=True)
+
+@app.route('/search/<word>', methods=['POST', 'GET'])
+def search(word):
+    if request.method == 'GET':
+        found_list = findWord()
+        
+        if len(notes) != 0:
+            return json.dumps(notes)
+        else:
+            return json.dumps([])
 
 
 @app.route('/notes', methods=['POST', 'GET'])
