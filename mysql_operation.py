@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+import time
 import mysql.connector
 
 
@@ -42,10 +42,12 @@ def touchNote(item_id, content):
     conn, cursor = connect2Mysql()
     cursor.execute('SELECT * from flow_item where item_id = %s', (item_id,))
     values = cursor.fetchall()
+
+    now = time.time()
     if len(values) == 0: # find none
-        cursor.execute('INSERT into flow_item (content, item_id) values (%s, %s)', [content, item_id])
+        cursor.execute('INSERT into flow_item (content, item_id, modified_time) values (%s, %s, %s)', [content, item_id, now])
     else:# find one
-        cursor.execute('UPDATE flow_item set content = %s where item_id = %s', [content, item_id])
+        cursor.execute('UPDATE flow_item set content = %s, modified_time = %s where item_id = %s', [content, now, item_id])
     # insert_id = cursor.lastrowid
     conn.commit()        
     cursor.close()

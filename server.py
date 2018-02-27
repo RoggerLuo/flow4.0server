@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from flask_cors import *
 from flask import Flask, render_template, Response, request
 import json
@@ -11,7 +10,7 @@ CORS(app, supports_credentials=True)
 
 @app.route('/search/<word>', methods=['GET'])
 def search(word):
-    found_list = findWord(word,20)
+    found_list = findWord(word, 20)
     if len(found_list) != 0:
         return json.dumps(found_list)
     else:
@@ -32,8 +31,10 @@ def note(item_id):
     if (request.method == 'POST') or (request.method == 'PUT'):
         content = request.form['content']
         sql.touchNote(item_id, content)
+    
     if request.method == 'DELETE':
         sql.deleteNote(item_id)
+    
     return json.dumps('ok')
 
 
