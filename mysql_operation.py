@@ -11,7 +11,7 @@ def connect2Mysql():
 
 def readNotes():
     conn, cursor = connect2Mysql()
-    cursor.execute('SELECT * from flow_item')
+    cursor.execute('SELECT * from flow_item where status = 0 Order By modify_time Desc')
     values = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -32,7 +32,7 @@ def deleteNote(item_id):
     cursor.execute('SELECT * from flow_item where item_id = %s', (item_id,))
     values = cursor.fetchall()
     if len(values) != 0: # find none
-        cursor.execute('DELETE from flow_item where item_id = %s', (item_id,))
+        cursor.execute('UPDATE flow_item set status = 1 where item_id = %s', (item_id,))
         conn.commit()        
     cursor.close()
     conn.close()
@@ -45,9 +45,9 @@ def touchNote(item_id, content):
 
     now = time.time()
     if len(values) == 0: # find none
-        cursor.execute('INSERT into flow_item (content, item_id, modified_time) values (%s, %s, %s)', [content, item_id, now])
+        cursor.execute('INSERT into flow_item (content, item_id, modify_time) values (%s, %s, %s)', [content, item_id, now])
     else:# find one
-        cursor.execute('UPDATE flow_item set content = %s, modified_time = %s where item_id = %s', [content, now, item_id])
+        cursor.execute('UPDATE flow_item set content = %s, modify_time = %s where item_id = %s', [content, now, item_id])
     # insert_id = cursor.lastrowid
     conn.commit()        
     cursor.close()
