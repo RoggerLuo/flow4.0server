@@ -1,10 +1,9 @@
 import numpy as np
 import os
 import pickle
+from .sentence import Sentence
 
 db_path = os.path.dirname(os.path.realpath(__file__))+'/w2v.pkl'
-
-
 def getDbData():
     data = []
     if os.path.exists(db_path):
@@ -34,7 +33,7 @@ def sortByDeviation(entry, data):
     return sortedList
 
 
-def findWord(word, length=10):
+def byWord(word, length=10):
     data = getDbData()
     entrys = getEntrysByWord(word, data)
     if len(entrys) == 0:
@@ -44,3 +43,15 @@ def findWord(word, length=10):
         entry = entrys[0]
         sortedList = sortByDeviation(entry, data)
     return sortedList[0:length]
+
+
+def bySentence(sentence, length=10):
+    s = Sentence(sentence)
+    word_list = s.segment().filter().word_list
+    rs_list = []
+    for word in word_list:
+        rs_list.append(byWord(word,length))
+    return rs_list
+
+
+

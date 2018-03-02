@@ -2,15 +2,15 @@ from flask_cors import *
 from flask import Flask, render_template, Response, request
 import json
 import mysql_operation as sql
-from w2v.findSimilar import findWord
+from w2v import findSimilarWords
 
 app = Flask(__name__, static_folder='static')
 CORS(app, supports_credentials=True)
 
 
-@app.route('/search/<word>', methods=['GET'])
-def search(word):
-    found_list = findWord(word, 20)
+@app.route('/search/<sentence>', methods=['GET'])
+def search(sentence):
+    found_list = findSimilarWords.bySentence(sentence, 10)
     if len(found_list) != 0:
         return json.dumps(found_list)
     else:
