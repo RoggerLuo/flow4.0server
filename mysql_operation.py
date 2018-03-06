@@ -46,6 +46,8 @@ def touchNote(item_id, content):
     now = time.time()
     if len(values) == 0: # find none
         cursor.execute('INSERT into flow_item (content, item_id, modify_time) values (%s, %s, %s)', [content, item_id, now])
+        cursor.execute('UPDATE temp set value = 1 where name = %s', ('has_new',))
+        
     else:# find one
         cursor.execute('UPDATE flow_item set content = %s, modify_time = %s where item_id = %s', [content, now, item_id])
     # insert_id = cursor.lastrowid

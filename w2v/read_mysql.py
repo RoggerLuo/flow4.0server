@@ -13,17 +13,30 @@ def connect2Mysql():
 
 def readNotes():
     conn, cursor = connect2Mysql()
-    cursor.execute('select * from flow_item')
+    cursor.execute('SELECT * from flow_item where status = 0 Order By modify_time Desc')
+    cursor.execute('UPDATE temp set value = 0 where name = %s', ('has_new',))
     values = cursor.fetchall()
     cursor.close()
     conn.close()
     return values
+
+def getNewStatus():
+    conn, cursor = connect2Mysql()
+    cursor.execute('SELECT * from temp where name = %s', ('has_new',))
+    values = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return values
+
 
 for x in range(20000):
     notes = readNotes()
     length = len(notes)
     
     for i in range(length):
+        status = getNewStatus()[0][2]
+        if status == 1:
+            break                            
         content = notes[i][2]
         if len(content) > 10:
             print('[第%d轮]' % x)
