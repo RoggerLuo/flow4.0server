@@ -3,6 +3,21 @@ import numpy as np
 
 ignoreds = ['，', ',', '的', '是', '\n', ' ', '(', ')', '.', '/']
 
+import mysql.connector
+
+def connect2Mysql():
+    conn = mysql.connector.connect(
+        user='root', password='as56210', database='flow4.0', use_unicode=True)
+    cursor = conn.cursor()
+    return conn, cursor
+
+def getIgnores():
+    conn, cursor = connect2Mysql()
+    cursor.execute('SELECT * from ignore_list')
+    values = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return [v[1] for v in values]
 
 class Sentence(object):
 
@@ -15,8 +30,9 @@ class Sentence(object):
 
     def filter(self):
         filtered_list = []
+        ignored_list = getIgnores()
         for word in self.word_list:
-            if word not in ignoreds:
+            if word not in ignored_list:
                 filtered_list.append(word)
         self.word_list = filtered_list
 

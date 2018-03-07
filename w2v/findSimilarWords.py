@@ -1,7 +1,6 @@
 import numpy as np
 import os
 import pickle
-from .sentence import Sentence
 
 db_path = os.path.dirname(os.path.realpath(__file__))+'/w2v.pkl'
 def getDbData():
@@ -45,9 +44,7 @@ def byWord(word, length=10):
     return sortedList[0:length]
 
 
-def bySentence(sentence, length=10):
-    s = Sentence(sentence)
-    word_list = s.segment().filter().word_list
+def by_word_list(word_list, length=10):
     rs_list = []
     for word in word_list:
         rs_list.append(byWord(word,length))

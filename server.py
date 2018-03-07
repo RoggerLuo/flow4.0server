@@ -3,6 +3,7 @@ from flask import Flask, render_template, Response, request
 import json
 import mysql_operation as sql
 from w2v import findSimilarWords
+from sentence import Sentence
 
 app = Flask(__name__, static_folder='static')
 CORS(app, supports_credentials=True)
@@ -10,7 +11,9 @@ CORS(app, supports_credentials=True)
 
 @app.route('/search/<sentence>', methods=['GET'])
 def search(sentence):
-    found_list = findSimilarWords.bySentence(sentence, 10)
+    s = Sentence(sentence)
+    word_list = s.segment().filter().word_list
+    found_list = findSimilarWords.by_word_list(word_list, 20)
     if len(found_list) != 0:
         return json.dumps(found_list)
     else:
