@@ -1,6 +1,8 @@
+import mysql.connector
 from task import Task
 import os
-import mysql.connector
+#import mysql.connector
+
 t = Task()
 
 

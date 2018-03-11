@@ -1,9 +1,6 @@
+import mysql.connector
 import jieba
 import numpy as np
-
-ignoreds = ['，', ',', '的', '是', '\n', ' ', '(', ')', '.', '/']
-
-import mysql.connector
 
 def connect2Mysql():
     conn = mysql.connector.connect(
