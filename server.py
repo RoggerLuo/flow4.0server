@@ -9,6 +9,17 @@ app = Flask(__name__, static_folder='static')
 CORS(app, supports_credentials=True)
 
 
+@app.route('/header', methods=['GET','POST'])
+def header():
+    if (request.method == 'POST'):
+        text = sql.writeHeaderText(request.form['text'])
+        return json.dumps('ok')
+
+    if (request.method == 'GET'):
+        text = sql.getHeaderText()
+        return json.dumps(text)
+
+
 @app.route('/search/<sentence>', methods=['GET'])
 def search(sentence):
     s = Sentence(sentence)
