@@ -16,21 +16,34 @@ def getIgnores():
     conn.close()
     return [v[1] for v in values]
 
+def get_high_frequency_list():
+    conn, cursor = connect2Mysql()
+    cursor.execute('SELECT * from high_frequency_list')
+    values = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return [v[1] for v in values]
+
 class Sentence(object):
 
     def __init__(self, config):
         self.config = config
         self.word_list = []
+        self.ignored_list = getIgnores()
+        self.high_frequency_list = get_high_frequency_list()
+
 
     def segment(self):
         self.word_list = jieba.lcut(self.string)  # 默认是精确模式
 
     def filter(self):
         filtered_list = []
-        ignored_list = getIgnores()
+
         for word in self.word_list:
-            if word not in ignored_list:
-                filtered_list.append(word)
+            if word not in self.ignored_list:
+                if word not in self.high_frequency_list:
+                    filtered_list.append(word)
+
         self.word_list = filtered_list
 
     def getWordAndContext(self, string):
