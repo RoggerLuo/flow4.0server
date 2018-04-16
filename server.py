@@ -24,7 +24,7 @@ def header():
 def search(sentence):
     s = Sentence(sentence)
     word_list = s.segment().filter().word_list
-    found_list = findSimilarWords.by_word_list(word_list, 10)
+    found_list = findSimilarWords.by_word_list(word_list, 15)
     if len(found_list) != 0:
         return json.dumps(found_list)
     else:
