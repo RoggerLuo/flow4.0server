@@ -3,11 +3,11 @@ from flask import Flask, render_template, Response, request
 import json
 import mysql_operation as sql
 from w2v import findSimilarWords
-from sentence import Sentence
+from string2word import String2word
 
 app = Flask(__name__, static_folder='static')
 CORS(app, supports_credentials=True)
-
+s2w = String2word()
 
 @app.route('/header', methods=['GET','POST'])
 def header():
@@ -22,8 +22,7 @@ def header():
 
 @app.route('/search/<sentence>', methods=['GET'])
 def search(sentence):
-    s = Sentence(sentence)
-    word_list = s.segment().filter().word_list
+    word_list = s2w.segment(sentence).filter()
     found_list = findSimilarWords.by_word_list(word_list, 15)
     if len(found_list) != 0:
         return json.dumps(found_list)
@@ -44,7 +43,8 @@ def notes():
 def note(item_id):
     if (request.method == 'POST') or (request.method == 'PUT'):
         content = request.form['content']
-        sql.touchNote(item_id, content)
+        wordlist = s2w.segment(content).filter()
+        sql.touchNote(item_id,content,json.dumps(wordlist))
     
     if request.method == 'DELETE':
         sql.deleteNote(item_id)
@@ -54,11 +54,3 @@ def note(item_id):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555)  # ,  debug=True
-
-
-# if request.method == 'GET':
-#     notes = sql.readNotesById(item_id)
-#     if len(notes) != 0:
-#         return json.dumps(notes[0])
-#     else:
-#         return json.dumps({})
