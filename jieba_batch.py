@@ -24,7 +24,7 @@ s2w = String2word()
 
 def fenci(note):
     wordlist = s2w.segment(note[2]).filter()
-    wordlistStr = json.dumps(wordlist,ensure_ascii=False )
+    wordlistStr = json.dumps(wordlist,ensure_ascii=False)
 
     conn, cursor = connect2Mysql()
     cursor.execute('UPDATE flow_item set wordlist = %s where item_id = %s', [ wordlistStr, note[1] ])

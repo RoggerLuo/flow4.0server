@@ -44,7 +44,7 @@ def note(item_id):
     if (request.method == 'POST') or (request.method == 'PUT'):
         content = request.form['content']
         wordlist = s2w.segment(content).filter()
-        sql.touchNote(item_id,content,json.dumps(wordlist))
+        sql.touchNote(item_id,content,json.dumps(wordlist,ensure_ascii=False))
     
     if request.method == 'DELETE':
         sql.deleteNote(item_id)
