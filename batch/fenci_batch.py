@@ -33,10 +33,10 @@ def fenci(note):
     conn.close()
     print(note[1])
 
-def jieba():
+def do_batch():
     notes = readNotes() 
     for note in notes:
         fenci(note)
 
-jieba()
+do_batch()
 

@@ -3,6 +3,7 @@ from flask import Flask, render_template, Response, request
 import json
 import mysql_operation as sql
 from w2v import findSimilarWords
+from w2v.WordsCompress import WordsCompress
 from string2word import String2word
 
 app = Flask(__name__, static_folder='static')
@@ -23,11 +24,18 @@ def header():
 @app.route('/search/<sentence>', methods=['GET'])
 def search(sentence):
     word_list = s2w.segment(sentence).filter()
+    if len(word_list) > 10:
+        compress = WordsCompress()
+        word_list = compress.feedWordlist(word_list)
+
     found_list = findSimilarWords.by_word_list(word_list, 15)
+    
+
     if len(found_list) != 0:
         return json.dumps(found_list)
     else:
         return json.dumps([])
+
 
 
 @app.route('/notes', methods=['GET'])

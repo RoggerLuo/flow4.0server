@@ -1,10 +1,12 @@
+from config import Config
 import mysql.connector
 from task import Task
 import os
-#import mysql.connector
+import json
+import time    
 
-t = Task()
-
+c = Config()
+t = Task(c)
 
 def connect2Mysql():
     conn = mysql.connector.connect(
@@ -25,30 +27,32 @@ def readNotes():
     conn.close()
     return values
 
-def getNewStatus():
+def ifNewNoteComing():
     conn, cursor = connect2Mysql()
     cursor.execute('SELECT * from temp where name = %s', ('has_new',))
     values = cursor.fetchall()
     cursor.close()
     conn.close()
-    return values
+    return values[0][2]
 
-
+lastCost = 1
 for x in range(20000):
-    print('[第%d轮]' % x)
+    startTime = time.time()
     notes = readNotes()
-    length = len(notes)
-    
-    for i in range(length):
-        status = getNewStatus()[0][2]
-        print(status)
-        if status == 1:
-            break                            
-        content = notes[i][2]
-        if len(content) > 10:
-            print('[第%d轮]' % x)
-            print('    当前第%d段,一共%d段:' % (i, length))
-            trimmedContent = content.strip()
-            print(trimmedContent[:20])
-            t.readTxtLine(trimmedContent)
-
+    notes_counts = len(notes)
+    cost = 0
+    for i in range(notes_counts):
+        if ifNewNoteComing() == 1: break                                        
+        wordlist = json.loads(notes[i][3])
+        cost += t.feedlist(wordlist)/1000
+    t.save()
+    print('[第%d轮,耗时%f分],%f' % (x,(startTime-time.time())/60,cost))
+    if abs(cost - lastCost)/lastCost <= 0.02:
+        c.rateChange(0.01)
+        print('rate change 0.01')
+    else:
+        c.rateChange(0.05)
+        print('rate change 0.05')
+    lastCost = cost
+    # print('[第%d轮]' % x)
+    # print('    当前第%d篇,一共%d篇:' % (i, notes_counts))

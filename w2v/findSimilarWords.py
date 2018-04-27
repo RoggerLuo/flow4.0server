@@ -43,12 +43,10 @@ def byWord(word, length=10):
         sortedList = sortByDeviation(entry, data)
     return sortedList[0:length]
 
-
 def by_word_list(word_list, length=10):
     rs_list = []
     for word in word_list:
         rs_list.append(byWord(word,length))
     return rs_list
-
 
 

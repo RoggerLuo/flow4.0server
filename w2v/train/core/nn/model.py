@@ -29,8 +29,7 @@ class Nn(object):
             self.sess.run(self.gd)
 
             # 调参数、测试性能的时候才调用
-            if self.config.env == 'development':
-                self.rs_list.append(self.sess.run(self.cost))
+            # self.rs_list.append(self.sess.run(self.cost))
         return self
 
     def export(self):
