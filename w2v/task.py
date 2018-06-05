@@ -12,7 +12,7 @@ class Task(object):
 
     def feedlist(self,wordlist):        
         cost = 0
-        if len(wordlist) > 5:
+        if len(wordlist) >= 2:
             for i in range(self.config.repeate_times):
                 cost += self.train.wordlist(wordlist)
         return cost
