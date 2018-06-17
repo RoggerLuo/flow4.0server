@@ -30,10 +30,14 @@ def search(sentence):
 
     found_list = findSimilarWords.by_word_list(word_list, 15)
     
+    for word in word_list:
+        sql.writeHistory(word) # 添加列表
+
     if len(found_list) != 0:
         return json.dumps(found_list)
     else:
         return json.dumps([])
+
 
 @app.route('/history', methods=['GET'])
 def history():
@@ -43,11 +47,10 @@ def history():
     else:
         return json.dumps([])
 
-
-@app.route('/history/<word>', methods=['GET'])
-def writeHistory(word):
-    sql.writeHistory(word)
-    return json.dumps('ok')
+# @app.route('/history/<word>', methods=['GET'])
+# def writeHistory(word):
+#     sql.writeHistory(word)
+#     return json.dumps('ok')
 
         
 
