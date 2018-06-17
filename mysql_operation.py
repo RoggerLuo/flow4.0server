@@ -27,7 +27,7 @@ def writeHistory(word):
 def readHistory():
     conn, cursor = connect2Mysql()
     cursor.execute(
-        'SELECT * from search_history Order By count Desc limit 300')
+        'SELECT * from search_history Order By timstamp Desc limit 300')
     values = cursor.fetchall()
     cursor.close()
     conn.close()
