@@ -45,7 +45,7 @@ def history():
 
 
 @app.route('/history/<word>', methods=['GET'])
-def writeHistory():
+def writeHistory(word):
     sql.writeHistory(word)
     return json.dumps('ok')
 
