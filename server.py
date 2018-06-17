@@ -30,13 +30,20 @@ def search(sentence):
 
     found_list = findSimilarWords.by_word_list(word_list, 15)
     
-
     if len(found_list) != 0:
         return json.dumps(found_list)
     else:
         return json.dumps([])
 
+@app.route('/history', methods=['GET'])
+def history():
+    arr = sql.readHistory()
+    if len(arr) != 0:
+        return json.dumps(arr)
+    else:
+        return json.dumps([])
 
+        
 
 @app.route('/notes', methods=['GET'])
 def notes():

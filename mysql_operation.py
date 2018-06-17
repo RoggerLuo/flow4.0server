@@ -9,6 +9,15 @@ def connect2Mysql():
     return conn, cursor
 
 
+def readHistory():
+    conn, cursor = connect2Mysql()
+    cursor.execute(
+        'SELECT * from search_history Order By count Desc limit 30')
+    values = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return values
+
 def readNotes():
     conn, cursor = connect2Mysql()
     cursor.execute(
