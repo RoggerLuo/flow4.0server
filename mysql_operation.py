@@ -18,7 +18,7 @@ def writeHistory(word):
                        word,20])
     else:  # find one
         count = values[0][2] + 20
-        cursor.execute('UPDATE search_history set count = %s where word = %s' , [ word, count ])
+        cursor.execute('UPDATE search_history set count = %s where word = %s' , [ count,word ])
     # insert_id = cursor.lastrowid
     conn.commit()
     cursor.close()
