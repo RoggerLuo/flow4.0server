@@ -14,7 +14,7 @@ def writeHistory(word):
     # values = cursor.fetchall()
 
     # if len(values) == 0:  # find none
-    cursor.execute('INSERT into search_history (word, count, timestamp) values (%s, %s,%d)', [word,1,time.time()])
+    cursor.execute('INSERT into search_history (word, timestamp) values (%s, %s)', [word,time.time()])
     # else:  # find one
         # count = values[0][2] + 1
         # cursor.execute('UPDATE search_history set count = %s where word = %s' , [ count,word ])
