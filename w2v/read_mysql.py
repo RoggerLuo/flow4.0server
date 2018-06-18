@@ -39,6 +39,8 @@ lastCost = 1
 for x in range(20000):
     startTime = time.time()
     notes = readNotes()
+    deletedNote = readDeletedNotes()
+
     notes_counts = len(notes)
     cost = 0
     for i in range(notes_counts):
@@ -46,7 +48,14 @@ for x in range(20000):
         wordlist = json.loads(notes[i][3])
         cost += t.feedlist(wordlist)/1000
     t.save()
-    print('[第%d轮,耗时%f分],%f' % (x,(startTime-time.time())/60,cost))
+
+    if x%4 == 0:
+        for j in range(len(deletedNote)):
+            wordlist = json.loads(deletedNote[i][3])
+            t.feedlist(wordlist)
+
+
+    print('[第%d轮,耗时%f分],cost:%f' % (x,(startTime-time.time())/60,cost))
     if abs(cost - lastCost)/lastCost <= 0.02:
         c.rateChange(0.01)
         print('rate change 0.01')
@@ -54,5 +63,6 @@ for x in range(20000):
         c.rateChange(0.05)
         print('rate change 0.05')
     lastCost = cost
+
     # print('[第%d轮]' % x)
     # print('    当前第%d篇,一共%d篇:' % (i, notes_counts))
