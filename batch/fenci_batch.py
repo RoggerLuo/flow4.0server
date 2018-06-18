@@ -14,7 +14,7 @@ def connect2Mysql():
 def readNotes():
     conn, cursor = connect2Mysql()
     cursor.execute(
-        'SELECT * from flow_item where status = 0 Order By modify_time Desc')
+        'SELECT * from flow_item Order By modify_time Desc') # where status = 0 
     values = cursor.fetchall()
     cursor.close()
     conn.close()
