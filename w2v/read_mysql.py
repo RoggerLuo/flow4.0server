@@ -63,10 +63,10 @@ for x in range(20000):
         cost += t.feedlist(wordlist) / 1000
     t.save()
 
-    if x % 4 == 0:
-        for j in range(len(deletedNote)):
-            wordlist = json.loads(deletedNote[j][3])
-            t.feedlist(wordlist)
+    # if x % 4 == 0:
+    #     for j in range(len(deletedNote)):
+    #         wordlist = json.loads(deletedNote[j][3])
+    #         t.feedlist(wordlist)
 
     print('[第%d轮,耗时%f分],cost:%f' % (x, (startTime - time.time()) / 60, cost))
     if abs(cost - lastCost) / lastCost <= 0.02:
