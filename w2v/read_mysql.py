@@ -30,14 +30,14 @@ def readNotes():
     return values
 
 
-def readDeletedNotes():
-    conn, cursor = connect2Mysql()
-    cursor.execute(
-        'SELECT * from flow_item where status = 1 Order By modify_time Desc')
-    values = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return values
+# def readDeletedNotes():
+#     conn, cursor = connect2Mysql()
+#     cursor.execute(
+#         'SELECT * from flow_item where status = 1 Order By modify_time Desc')
+#     values = cursor.fetchall()
+#     cursor.close()
+#     conn.close()
+#     return values
 
 
 def ifNewNoteComing():
@@ -52,7 +52,7 @@ lastCost = 1
 for x in range(20000):
     startTime = time.time()
     notes = readNotes()
-    deletedNote = readDeletedNotes()
+    # deletedNote = readDeletedNotes()
 
     notes_counts = len(notes)
     cost = 0
