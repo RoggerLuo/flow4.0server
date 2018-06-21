@@ -52,7 +52,6 @@ def history():
 #     sql.writeHistory(word)
 #     return json.dumps('ok')
 
-        
 
 @app.route('/notes', methods=['GET'])
 def notes():
