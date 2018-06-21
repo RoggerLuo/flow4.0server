@@ -36,7 +36,7 @@ def byWord(word, length=10):
     data = getDbData()
     entrys = getEntrysByWord(word, data)
     if len(entrys) == 0:
-        print('没找到')
+        # print('没找到')
         return []
     else:
         entry = entrys[0]

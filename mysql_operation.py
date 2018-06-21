@@ -11,16 +11,8 @@ def connect2Mysql():
 
 def writeHistory(word):
     conn, cursor = connect2Mysql()
-    # cursor.execute('SELECT * from search_history where word = %s', (word,))
-    # values = cursor.fetchall()
-
-    # if len(values) == 0:  # find none
     cursor.execute('INSERT into search_history (word, timestamp) values (%s, %s)', [
                    word, time.time()])
-    # else:  # find one
-    # count = values[0][2] + 1
-    # cursor.execute('UPDATE search_history set count = %s where word = %s' , [ count,word ])
-    # insert_id = cursor.lastrowid
     conn.commit()
     cursor.close()
     conn.close()
