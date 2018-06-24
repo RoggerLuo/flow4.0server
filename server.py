@@ -5,7 +5,7 @@ import mysql_operation as sql
 from w2v import findSimilarWords
 from w2v.WordsCompress import WordsCompress
 from string2word import String2word
-
+from w2v import noteSearch
 app = Flask(__name__, static_folder='static')
 CORS(app, supports_credentials=True)
 s2w = String2word()
@@ -24,12 +24,12 @@ def header():
 @app.route('/search/<sentence>', methods=['GET'])
 def search(sentence):
     word_list = s2w.segment(sentence).filter()
-    if len(word_list) > 10:
-        compress = WordsCompress()
-        word_list = compress.feedWordlist(word_list)
+    # if len(word_list) > 10:
+    #     compress = WordsCompress()
+    #     word_list = compress.feedWordlist(word_list)
 
-    found_list = findSimilarWords.by_word_list(word_list, 15)
-    
+    # found_list = findSimilarWords.by_word_list(word_list, 15)
+    found_list = noteSearch.by_single_word(word_list)
     for word in word_list:
         sql.writeHistory(word) # 添加列表
 
