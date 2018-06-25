@@ -28,7 +28,7 @@ def search(sentence):
     #     compress = WordsCompress()
     #     word_list = compress.feedWordlist(word_list)
 
-    found_list = findSimilarWords.by_word_list(word_list, 15)
+    found_list = findSimilarWords.by_word_list(word_list,25)
     # found_list = noteSearch.by_single_word(word_list)
     for word in word_list:
         sql.writeHistory(word) # 添加列表
