@@ -17,10 +17,11 @@ class WordsCompress(object):
     def feedWordlist(self, wordlist):
         wordlist = self.uniq(wordlist)
         entrylist = self.wordlist2entrylist(wordlist)
-        combinationList = self.combine2list(entrylist)
-        sortedList = sorted(combinationList, key=lambda dic: dic['devi'])
-        interception = sortedList[:10]
-        return self.getBackWordlist(interception)
+        combinedlist = self.combine2list(entrylist)
+        return list(map(lambda x: x['word'],combinedlist))
+        # sortedList = sorted(combinationList, key=lambda dic: dic['devi'])
+        # interception = sortedList[:10]
+        # return self.getBackWordlist(interception)
 
     def getBackWordlist(self, interception):
         wordlist = []
@@ -46,14 +47,21 @@ class WordsCompress(object):
         return uniqList
 
     def combine2list(self, entrylist):
-        combinationList = []
+        combinationList = [entrylist[0]]
         for i in range(len(entrylist)):  # len = 3, i = 1
             entry = entrylist[i]
+            flag = True
+            for item in combinationList:
+                if self.calcDevi(entry, item) < 12:
+                    flag = False
+            if flag == True:
+                combinationList.append(entry)
 
-            for j in range(len(entrylist) - i - 1):  # len = 1, j = 0
-                _entry = entrylist[i + j + 1]  # i+j+1 = 2
-                combinationList.append({'entry1': entry['word'], 'entry2': _entry[
-                                       'word'], 'devi': self.calcDevi(entry, _entry)})
+
+            # for j in range(len(entrylist) - i - 1):  # len = 1, j = 0
+            #     _entry = entrylist[i + j + 1]  # i+j+1 = 2
+            #     combinationList.append({'entry1': entry['word'], 'entry2': _entry[
+            #                            'word'], 'devi': self.calcDevi(entry, _entry)})
         return combinationList
 
     def getDbData(self):
@@ -71,6 +79,6 @@ class WordsCompress(object):
         return np.sum(deviationVec)
 
 
-# f = FindSimilar()
-# f.byWordlist(["##", "定义", "手上", "工作", "类型", "###", "逻辑", "梳理", "###", "事务", "规划", "类", "习惯", "形成", "对比", "旧习惯", "概念", "建立", "联系", "范畴", "本质", "类型", "工作", "阅读", "代码", "熟悉业务",
-#               "转换", "事务", "分析方法", "范畴", "技能", "处理", "快乐", "Handle", "局面", "##", "笔记", "类型", "加标签", "根本", "搜", "不到", "node", "npm", "版本", "很难", "碰到", "难", "想到", "丢", "这里", "不管"])
+# f = WordsCompress()
+# r=f.feedWordlist(["按照", "编辑", "时间", "一天", "版本", "删除", "增加", "版本", "删除", "训练", "改成", "16", "位", "vector", "搜索", "搜", "几个", "词"])
+# print(r)
