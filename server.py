@@ -24,7 +24,7 @@ def header():
 @app.route('/search/<sentence>', methods=['GET'])
 def search(sentence):
     word_list = s2w.segment(sentence).filter()
-    if len(word_list) > 10:
+    if len(word_list) > 5:
         compress = WordsCompress()
         word_list = compress.feedWordlist(word_list)
 
