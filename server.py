@@ -24,9 +24,9 @@ def header():
 @app.route('/search/<sentence>', methods=['GET'])
 def search(sentence):
     word_list = s2w.segment(sentence).filter()
-    # if len(word_list) > 10:
-    #     compress = WordsCompress()
-    #     word_list = compress.feedWordlist(word_list)
+    if len(word_list) > 10:
+        compress = WordsCompress()
+        word_list = compress.feedWordlist(word_list)
 
     found_list = findSimilarWords.by_word_list(word_list,25)
     # found_list = noteSearch.by_single_word(word_list)
